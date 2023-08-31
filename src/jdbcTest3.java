@@ -1,10 +1,7 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 
-public class jdbcTest {
+public class jdbcTest3 {
     public static void main(String[] args) {
         String jdbcUrl = "jdbc:mysql://localhost:3306/powernode";
         String username = "root";
@@ -24,15 +21,22 @@ public class jdbcTest {
             //获取数据库操作对象
             statement = connection.createStatement();
             //执行sql
-//            String sql = "insert into dept(deptno,dname,loc) values(50, '人事部', '北京')";
-//            String sql = "DELETE FROM dept WHERE deptno=50";
             String sql = "SELECT * FROM dept";
-            // 返回值是影响数据库中的记录条数
-            int count = statement.executeUpdate(sql);
+            // int executeUpdate(insert/delete/update)
+            // ResultSet executeQuery(select)
+
+            // 返回resultset
+            ResultSet resultset = statement.executeQuery(sql);
 
             //处理查询结果集
+            while (resultset.next()){
+                // 编号从1开始
+                String deptno = resultset.getString(1);
+                String dname = resultset.getString(2);
+                String loc = resultset.getString(3);
+                System.out.println("DEPTNO:" + deptno + "  " + "DNAME:" + dname + "  " + "LOC:" + "loc");
+            }
 
-            System.out.println(count==1 ? "保存成功":"保存失败");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -58,3 +62,4 @@ public class jdbcTest {
         }
     }
 }
+
